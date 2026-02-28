@@ -23,6 +23,7 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [totalItems, setTotalItems] = useState(0);
 
   // Map sort options to API parameters
   const getSortParams = (sort: SortOption) => {
@@ -89,6 +90,7 @@ export default function Home() {
         
         const data = await response.json();
         setProducts(data.products || []);
+        setTotalItems(data.total || 0);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
@@ -190,6 +192,8 @@ export default function Home() {
               <ProductPagination 
                 currentPage={currentPage} 
                 onPageChange={setCurrentPage}
+                totalItems={totalItems}
+                itemsPerPage={ITEMS_PER_PAGE}
               />
             </div>
           </>
