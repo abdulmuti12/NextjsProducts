@@ -42,17 +42,13 @@ export default function Home() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://dummyjson.com/products/categories');
+        const response = await fetch('https://dummyjson.com/products/category-list');
         if (!response.ok) throw new Error('Failed to fetch categories');
         const data = await response.json();
-        // Extract category names from the API response
-        const categoryNames = Array.isArray(data) 
-          ? data.map((cat: any) => typeof cat === 'string' ? cat : cat.name)
-          : [];
+        const categoryNames = Array.isArray(data) ? data : [];
         setCategories(categoryNames);
       } catch (err) {
         console.error('Error fetching categories:', err);
-        // Fallback to empty categories if fetch fails
         setCategories([]);
       }
     };
