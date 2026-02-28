@@ -11,9 +11,6 @@
 /out/
 /build
 
-# Production
-/.vercel
-
 # Misc
 .DS_Store
 *.pem
