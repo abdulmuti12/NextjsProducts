@@ -37,6 +37,16 @@ export default function ProductPagination({
     }
   };
 
+  // Calculate the sliding window for page numbers
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  
+  // Adjust startPage if we're near the end
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
   return (
     <div className="flex items-center justify-center gap-4">
       <Button
@@ -51,8 +61,8 @@ export default function ProductPagination({
 
       {/* Page Numbers */}
       <div className="flex items-center gap-2">
-        {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
-          const pageNum = i + 1;
+        {Array.from({ length: endPage - startPage + 1 }).map((_, i) => {
+          const pageNum = startPage + i;
           return (
             <Button
               key={pageNum}
