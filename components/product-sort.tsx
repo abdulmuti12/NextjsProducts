@@ -7,8 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-export type SortOption = 'title-asc' | 'title-desc' | 'price-asc' | 'price-desc' | 'rating-desc' | 'newest';
+import type { SortOption } from '@/services/products';
 
 interface ProductSortProps {
   sortBy: SortOption;

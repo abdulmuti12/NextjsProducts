@@ -6,13 +6,22 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 interface ProductPaginationProps {
   currentPage: number;
   onPageChange: (page: number) => void;
+  totalItems: number;
+  itemsPerPage: number;
 }
 
 export default function ProductPagination({
   currentPage,
   onPageChange,
+  totalItems,
+  itemsPerPage,
 }: ProductPaginationProps) {
-  const MAX_PAGES = 4; // 30 items per page, ~120 total products from API
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Jangan tampilkan pagination jika hanya ada 1 halaman atau kurang
+  if (totalPages <= 1) {
+    return null;
+  }
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -22,7 +31,7 @@ export default function ProductPagination({
   };
 
   const handleNext = () => {
-    if (currentPage < MAX_PAGES) {
+    if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -42,7 +51,7 @@ export default function ProductPagination({
 
       {/* Page Numbers */}
       <div className="flex items-center gap-2">
-        {Array.from({ length: Math.min(5, MAX_PAGES) }).map((_, i) => {
+        {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
           const pageNum = i + 1;
           return (
             <Button
@@ -63,7 +72,7 @@ export default function ProductPagination({
       <Button
         variant="outline"
         onClick={handleNext}
-        disabled={currentPage >= MAX_PAGES}
+        disabled={currentPage >= totalPages}
         className="flex items-center gap-2"
       >
         Next
@@ -72,7 +81,7 @@ export default function ProductPagination({
 
       {/* Page Info */}
       <div className="ml-4 text-sm text-muted-foreground">
-        Page {currentPage} of {MAX_PAGES}
+        Page {currentPage} of {totalPages}
       </div>
     </div>
   );
